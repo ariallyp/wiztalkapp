@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Description: 移动IM应用应用。 Version: 1.0.0.0, May 12, 2016 Author: Neo -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.yuanxin.app</groupId>
+	<artifactId>app</artifactId>
+	<version>0.0.1</version>
+	<packaging>war</packaging>
+	<name>app</name>
+	<description>移动IM应用</description>
+
+	<organization>
+		<name>EpicSaaS</name>
+	</organization>
+
+	<properties>
+		<!-- 项目固有属性 -->
+		<project.Type>app</project.Type>
+		<containerType>front-end</containerType>
+		<encoding>UTF-8</encoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<JDK.version>1.7</JDK.version>
+		<maven-license-plugin.version>1.9.0</maven-license-plugin.version>
+		<!-- SaaS SDK 版本 -->
+		<framework.version>1.0.3</framework.version>
+		<!-- Site -->
+		<site.basedir>${project.basedir}</site.basedir>
+		<!-- mybaits生成框架版本 -->
+		<mybatis.generator.version>1.3.1.1</mybatis.generator.version>
+		<!-- JDBC Driver -->
+		<mysql-connector-java.version>5.1.34</mysql-connector-java.version>
+		<!-- 默认数据库 配置 -->
+		<mybatis.mapperPackage>com.yuanxin.app.app.dao.gen.mysql</mybatis.mapperPackage>
+		<mybatis.generator.configurationFile>src/main/resources/generatorConfig-mysql.xml</mybatis.generator.configurationFile>
+		<db.type>mysql</db.type>
+		<spring.version>4.1.7.RELEASE</spring.version>
+
+	</properties>
+
+	<distributionManagement>
+		<site>
+			<id>nexus</id>
+			<name>Internal Site</name>
+			<url>dav:http://nexus-server:8081/nexus/content/sites/site/${project.groupId}/${project.artifactId}/${project.version}</url>
+		</site>
+		<repository>
+			<id>nexus</id>
+			<name>Internal Releases</name>
+			<url>http://nexus-server:8081/nexus/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>Internal Snapshots</name>
+			<url>http://nexus-server:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>oschina</id>
+			<name>oschina</name>
+			<layout>default</layout>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+		</repository>
+	</repositories>
+
+
+
+	<dependencies>
+		<!-- SaaS SDK -->
+		<dependency>
+			<groupId>com.yuanxin</groupId>
+			<artifactId>framework</artifactId>
+			<version>${framework.version}</version>
+		</dependency>
+
+
+		<!-- 依赖weedfs客户端 -->
+		<dependency>
+			<artifactId>WeedFSClient</artifactId>
+			<version>0.0.1</version>
+			<groupId>net.weedfs.client</groupId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.rapid-framework</groupId>
+			<artifactId>rapid-core</artifactId>
+			<version>4.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.belerweb</groupId>
+			<artifactId>pinyin4j</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.4</version>
+		</dependency>
+		<dependency>
+			<groupId>nl.bitwalker</groupId>
+			<artifactId>UserAgentUtils</artifactId>
+			<version>1.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>7.0.50</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-juli</artifactId>
+			<version>7.0.50</version>
+		</dependency>
+
+
+		<!-- java readis客户端 -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.6.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>1.6.0.RELEASE</version>
+			<exclusions>
+				<exclusion>
+					<groupId>biz.paluch.redis</groupId>
+					<artifactId>lettuce</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context-support</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-databind</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.codehaus.jackson</groupId>
+					<artifactId>jackson-mapper-asl</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>redis.clients</groupId>
+					<artifactId>jedis</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.jredis</groupId>
+					<artifactId>jredis-core-ri</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-oxm</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId>
+				</exclusion>
+
+
+
+
+
+
+				<!-- <exclusion> <groupId>commons-beanutils</groupId> <artifactId>commons-beanutils</artifactId> 
+					</exclusion> <exclusion> <groupId>org.apache.commons</groupId> <artifactId>commons-pool2</artifactId> 
+					</exclusion> -->
+				<exclusion>
+					<groupId>com.github.spullara.redis</groupId>
+					<artifactId>client</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.jredis</groupId>
+					<artifactId>jredis-core-api</artifactId>
+				</exclusion>
+				<!-- <exclusion> <groupId>org.springframework</groupId> <artifactId>spring-core</artifactId> 
+					</exclusion> -->
+				<exclusion>
+					<groupId>com.alibaba</groupId>
+					<artifactId>dubbo</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- spring dependency jar packing -->
+
+
+
+
+
+
+
+		<!-- servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Test -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>3.1.2.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>3.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>1.8.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.clerezza.ext</groupId>
+			<artifactId>org.json.simple</artifactId>
+			<version>0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.directory.studio</groupId>
+			<artifactId>org.apache.commons.lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>com.springsource.javax.validation</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.netty</groupId>
+			<artifactId>netty</artifactId>
+			<version>3.2.10.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>2.5.3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-io</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>4.1.7.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>4.1.7.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>4.1.7.RELEASE</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>4.1.7.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>4.1.7.RELEASE</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>4.1.7.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>4.1.7.RELEASE</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.1.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.23</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.liferay</groupId>
+			<artifactId>org.apache.commons.fileupload</artifactId>
+			<version>1.2.2.LIFERAY-PATCHED-1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>4.1.7.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.4.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.34</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<!-- 格式化对象，方便输出日志 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.41</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+		<!-- log end -->
+		<!-- 映入JSON 都需要加，要不spring会报错 切记 -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-lgpl</artifactId>
+			<version>1.9.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-lgpl</artifactId>
+			<version>1.9.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
+	</dependencies>
+
+
+
+
+	<build>
+		<finalName>app</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>etc/*</exclude>
+					<exclude>
+                        **/dao/customized/mysql/*.xml
+                    </exclude>
+					<exclude>
+                        **/dao/customized/orcl/*.xml
+                    </exclude>
+					<exclude>
+                        **/dao/gen/mysql/*.xml
+                    </exclude>
+					<exclude>
+                        **/dao/gen/orcl/*.xml
+                    </exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<!-- 应用基础代码生成 -->
+			<plugin>
+				<groupId>com.yuanxin</groupId>
+				<artifactId>maven-gen-plugin</artifactId>
+				<version>0.1.1</version>
+				<configuration>
+					<appObjectPackage>com.yuanxin.app.app.appobject</appObjectPackage>
+					<entityPackage>com.yuanxin.app.app.entity.gen</entityPackage>
+					<mapperPackage>${mybatis.mapperPackage}</mapperPackage>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.yuanxin</groupId>
+						<artifactId>framework</artifactId>
+						<version>${framework.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<!-- 多数据库支持，修改XXMapper.xml路径的插件 -->
+			<plugin>
+				<groupId>com.yuanxin</groupId>
+				<artifactId>maven-gen-plugin</artifactId>
+				<version>0.1.1</version>
+				<executions>
+					<execution>
+						<phase>process</phase>
+						<goals>
+							<goal>modify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>${mybatis.generator.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>${mysql-connector-java.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.mybatis.generator</groupId>
+						<artifactId>mybatis-generator-maven-plugin</artifactId>
+						<version>${mybatis.generator.version}</version>
+					</dependency>
+
+					<dependency>
+						<groupId>org.mybatis.generator</groupId>
+						<artifactId>mybatis-generator-core</artifactId>
+						<version>${mybatis.generator.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.yuanxin</groupId>
+						<artifactId>framework</artifactId>
+						<version>${framework.version}</version>
+					</dependency>
+				</dependencies>
+
+				<configuration>
+					<overwrite>true</overwrite>
+				</configuration>
+
+				<!-- <executions> <execution> <id>Generate MyBatis Artifacts</id> <goals> 
+					<goal>generate</goal> </goals> </execution> </executions> -->
+			</plugin>
+
+			<!--描述文件生成插件 -->
+			<!-- <plugin> <groupId>com.yuanxin</groupId> <artifactId>maven-desc-plugin</artifactId> 
+				<version>0.0.1</version> <executions> <execution> <phase>install</phase> 
+				<goals> <goal>desc</goal> </goals> </execution> </executions> </plugin> -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<encoding>${encoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.1</version>
+				<configuration>
+					<skipTests>true</skipTests>
+					<argLine>-XX:-UseSplitVerifier</argLine>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${JDK.version}</source>
+					<target>${JDK.version}</target>
+					<encoding>${encoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<finalName>${project.build.finalName}-${project.version}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>${basedir}/package.xml</descriptor>
+					</descriptors>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+	<!-- 不同的DB环境打包，切换数据源 -->
+	<profiles>
+		<!-- mysql环境，默认激活 -->
+		<profile>
+			<id>mysql</id>
+			<properties>
+				<env>mysql</env>
+			</properties>
+			<!--默认启用的是dev环境配置 -->
+			<!-- <activation> <activeByDefault>true</activeByDefault> </activation> -->
+		</profile>
+		<!-- Oracle环境 -->
+		<profile>
+			<id>oracle</id>
+			<properties>
+				<env>oracle</env>
+				<mybatis.mapperPackage>com.yuanxin.app.app.dao.gen.orcl</mybatis.mapperPackage>
+				<mybatis.generator.configurationFile>src/main/resources/generatorConfig-oracle.xml</mybatis.generator.configurationFile>
+				<db.type>oracle</db.type>
+			</properties>
+		</profile>
+	</profiles>
+</project>

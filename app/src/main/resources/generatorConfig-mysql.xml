@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2012-2014, Yunnan Yuan Xin technology Co., Ltd.
+
+    All rights reserved.
+
+-->
+
+<!--
+    Description:  MyBatis mysql generated configuration。 
+    Version: 1.0.0.0, Sep 14, 2015
+    Author: Liang Ding
+-->
+
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+		<properties  resource="env.properties"/>
+	
+    <context id="eflowTables" targetRuntime="MyBatis3">
+        <plugin type="com.yuanxin.framework.mybatis.MySQLPaginationPlugin"></plugin>
+		
+        <plugin type="com.yuanxin.framework.mybatis.RenameExampleClassPlugin">
+            <property name="searchString" value="Example$" />
+            <property name="replaceString" value="Criteria" />
+        </plugin>
+        
+        <plugin type="com.yuanxin.framework.mybatis.SerializablePlugin" />
+
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <property name="suppressAllComments" value="false" />
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="${jdbc.url}"
+                        userId="${jdbc.username}" password="${jdbc.password}">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.yuanxin.app.app.entity.gen" targetProject="src/main/java/">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="com.yuanxin.app.app.dao.gen.mysql" targetProject="src/main/resources/">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yuanxin.app.app.dao.gen" targetProject="src/main/java/">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>  
+		
+		<!--
+		<table tableName="t_tableName" domainObjectName="EntityName">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		-->
+		<!-- IOS的APNS记录表 -->
+		<table tableName="apns_token" domainObjectName="ApnsToken">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		<!-- 应用信息表 -->
+		<table tableName="application" domainObjectName="Application">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		<!-- 租户应用关联表 -->
+		<table tableName="app_tenant" domainObjectName="AppTenant">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+		
+		<!-- 用户应用关联表 -->
+		<table tableName="app_user" domainObjectName="AppUser">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		
+				<!-- 用户应用权限表 -->
+		<table tableName="app_user_allow" domainObjectName="AppUserAllow">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		
+		<!-- 客户端信息表 -->
+		<table tableName="client" domainObjectName="Client">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+		<!-- 客户端版本表 -->
+		<table tableName="client_version" domainObjectName="ClientVersion">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		
+			<!-- 客户日志表 -->
+		<table tableName="client_log" domainObjectName="ClientLog">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		
+	    <!-- 客户端应用插件版本表 -->
+		<table tableName="clientplug_version" domainObjectName="ClientPluginVersion">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		
+		<!-- 使用单位版本控制表 -->
+		<table tableName="customer" domainObjectName="Customer">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+		<!-- 外表接口配置表 -->
+		<table tableName="external_interface" domainObjectName="ExternalInterface">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		<!-- 文件链接表 -->
+		<table tableName="file_link" domainObjectName="FileLink">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+		<!-- 应用操作表 -->
+		<table tableName="operation" domainObjectName="Operation">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>
+		
+		<!-- 组织表 -->
+		<table tableName="org" domainObjectName="Org">
+		  <!-- <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" /> -->
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+		<!-- 换肤表 -->
+		<table tableName="app_skin" domainObjectName="Skin">
+		  <!-- <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" /> -->
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  	
+		
+	
+	<!-- 组织用户表 -->
+		<table tableName="org_user" domainObjectName="OrgUser">
+		   <!-- <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" /> -->
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  	
+	
+	<!-- 群信息表 -->
+		<table tableName="qun" domainObjectName="Qun">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+	
+	<!-- 群用户表 -->
+		<table tableName="qun_user" domainObjectName="QunUser">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+	
+	
+	<!-- 证书资源配置表 -->
+		<table tableName="resource" domainObjectName="Resource">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+	
+	<!-- 租户表 -->
+		<table tableName="tenant" domainObjectName="Tenant">
+		  <!--  <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" /> -->
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+	
+	<!-- 用户表 -->
+			<table tableName="user" domainObjectName="User">
+		   <!-- <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" /> -->
+		   <columnOverride column="ID" property="uid" javaType="String" />
+		   <columnOverride column="name" property="name" javaType="String" />
+		   <columnOverride column="nickname" property="nickName" javaType="String" />
+		   <columnOverride column="name_py" property="pYInitial" javaType="String" />
+		   <columnOverride column="name_quanpin" property="pYQuanPin" javaType="String" />
+		</table>
+	<!-- 用户 ：常用联系人-->
+		<table tableName="user_user" domainObjectName="UserUser">
+		   <generatedKey column="ID" sqlStatement="select uuid_short()" identity="false" />
+		   <columnOverride column="ID" property="id" javaType="String" />
+		</table>  
+	
+		
+    </context> 
+</generatorConfiguration>

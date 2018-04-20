@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2012-2014, Yunnan Yuan Xin technology Co., Ltd. All rights 
+	reserved. -->
+
+<!-- Description: Spring 根配置。 Version: 1.0.0.0, Sep 14, 2015 Author: Liang 
+	Ding -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd">
+
+	<context:component-scan base-package="com.yuanxin.app.app">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<context:annotation-config />
+
+	<!-- 激活 SpringContextHolder 工具类 -->
+	<bean id="springContextHolder" class="com.yuanxin.framework.util.spring.SpringContextHolder"
+		lazy-init="false" />
+
+	<!-- JSR303 Validator 定义 -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="mappingLocations">
+			<list>
+				<value>classpath*:validation/validation-*.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 注册ConversionService -->
+	<!-- <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"> 
+				<property name="converters"> 
+					<list> 
+						<bean class="com.yuanxin.framework.covert.support.StringToNumberConverterFactory"/> 
+				 </list> 
+			 </property> 
+			</bean> -->
+			
+			
+			
+		<!--  <task:executor id="executor" pool-size="5" />
+    <task:scheduler id="scheduler" pool-size="10" />
+    <task:scheduled-tasks scheduler="scheduler">
+    				 每两小时执行一次
+    			<task:scheduled ref="synOrgAndUserTask" method="syn" fixed-delay="#{3600*2*1000}" />
+    </task:scheduled-tasks>
+			
+			<bean id="synOrgAndUserTask" class="com.yuanxin.app.app.job.SynOrgAndUserTask"></bean> -->
+
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="2048" />
+		<property name="maxIdle" value="200" />
+		<property name="numTestsPerEvictionRun" value="1024" />
+		<property name="timeBetweenEvictionRunsMillis" value="30000" />
+		<property name="minEvictableIdleTimeMillis" value="-1" />
+		<property name="softMinEvictableIdleTimeMillis" value="10000" />
+		<property name="maxWaitMillis" value="1500" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnReturn" value="false" />
+		<property name="jmxEnabled" value="true" />
+		<property name="jmxNamePrefix" value="youyuan" />
+		<property name="blockWhenExhausted" value="false" />
+	</bean>
+
+
+	<bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">    
+        <constructor-arg index="0" ref="jedisPoolConfig" />    
+        <constructor-arg index="1">    
+            <list>    
+                <bean class="redis.clients.jedis.JedisShardInfo">    
+                    <constructor-arg name="host" value="${redis.host}" />    
+                    <constructor-arg name="port" value="${redis.port}" />    
+                    <constructor-arg name="timeout" value="10000" />    
+                </bean>    
+            </list>    
+        </constructor-arg>    
+    </bean>    
+    <bean id="redisDataSource" class="com.yuanxin.app.app.service.RedisDataSourceImpl">    
+        <property name="shardedJedisPool" ref="shardedJedisPool"></property>    
+    </bean>    
+    <bean id="redisClientTemplate" class="com.yuanxin.app.app.service.RedisClientTemplate">    
+        <property name="redisDataSource" ref="redisDataSource"></property>    
+    </bean>    
+
+
+
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="hostName" value="${redis.host}" />
+		<property name="port" value="${redis.port}" />
+		<property name="poolConfig" ref="jedisPoolConfig" />
+	</bean>
+
+	<!-- redis操作模板 -->
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >
+			<property name="connectionFactory">
+					<ref bean="jedisConnectionFactory"/>
+			</property>
+	</bean>
+		
+		<bean id="redisService" class="com.yuanxin.app.app.service.RedisService">
+			<property name="host" value="${redis.host}"></property>
+			<property name="port" value="${redis.port}"></property>
+			<property name="keyExpireTime" value="${redis.key.expire}"></property>
+		</bean> 
+		
+		
+
+</beans>
